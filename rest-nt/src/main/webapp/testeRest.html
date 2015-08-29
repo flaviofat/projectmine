@@ -1,0 +1,29 @@
+<html lang="en">
+<head>
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+<body>
+ 
+<script>
+function teste() {
+	var valor = $('#cep').val();
+	$.ajax({
+	  type: 'POST',
+	  contentType: "application/json; charset=utf-8",
+	  url: "http://localhost:8080/rest-nt/services/find/address/",
+	  data: JSON.stringify({zipCode:valor}),
+	  success: function(callback){
+		  $("#textArea1").val("");
+		  $("#textArea1").val(callback.messageError).val(callback.messageError);
+	}
+	});
+}
+</script>
+INSIRA UM CEP:
+<input type="text" id="cep">
+<button type="button" onclick="teste()">BUSCAR CEP</button>
+<br/>
+<textarea rows="10" cols="20" id="textArea1"></textarea>
+ 
+</body>
+</html>
