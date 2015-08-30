@@ -1,11 +1,12 @@
 <html lang="en">
 <head>
-<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 </head>
 <body>
 
 	<script>
 		function control(url) {
+			var id = $('#id').val();
 			var rua = $('#rua').val();
 			var numero = $('#numero').val();
 			var cep = null;
@@ -24,7 +25,8 @@
 				contentType : "application/json; charset=utf-8",
 				url : "http://localhost:8080/rest-nt/services/"+url,
 				data : JSON.stringify({
-
+					
+					id:id,
 					number:numero,
 					zipCode:cep,
 					street:rua,
@@ -35,9 +37,17 @@
 
 				}),
 				success : function(callback) {
-					$("#textArea1").val("");
-					$("#textArea1").val(callback.messageError).val(
-							callback.messageError);
+					if(callback != "") {
+						$("#textArea1").val(
+							"id:" + callback.id + "," +
+							"number:" + callback.number + "," +
+							"zipCode:" + callback.zipCode + "," +
+							"street:" + callback.street + "," +
+							"neighborhood:" + callback.neighborhood + "," +
+							"city:" + callback.city + "," +
+							"state:" + callback.state + "," +
+							"complement:" + callback.complement)
+					}
 				},
 				error : function(callback) {
 					$("#textArea1").val(callback.responseJSON.message);
@@ -47,9 +57,11 @@
 	</script>
 	<label>INSIRA UM CEP:</label>
 	<input type="text" id="cep">
-	<button type="button" onclick="control('find/address/')">BUSCAR CEP</button>
+	<button type="button" onclick="control('find/zipcode/')">BUSCAR CEP</button>
 	<br />
 	<br />
+	<br />
+	<input type="text" id="id" placeholder="ID apenas find/update/delete">
 	<br />
 	<input type="text" id="rua" placeholder="RUA">
 	<br />
@@ -79,6 +91,6 @@
 	<label>RESULTADO</label>
 	<br />
 	<br />
-	<textarea rows="10" cols="20" id="textArea1"></textarea>
+	<textarea rows="10" cols="100" id="textArea1"></textarea>
 </body>
 </html>

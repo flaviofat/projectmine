@@ -8,7 +8,8 @@ import br.com.nt.exception.ZipCodeInvalidException;
 public class AddressUtil {
 
 	public void validateZipCode(String zipCode) throws ZipCodeInvalidException {
-		if (!zipCode.matches("^[0-9]{5}(?:-*[0-9]{3})?$")
+		if (zipCode == null
+				|| !zipCode.matches("^[0-9]{5}(?:-*[0-9]{3})?$")
 				|| zipCode.length() != 8
 				|| zipCode.matches("00000000")) {
 			throw new ZipCodeInvalidException();

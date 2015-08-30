@@ -8,7 +8,7 @@ import br.com.nt.exception.AddressInvalidException;
 import br.com.nt.exception.ZipCodeInvalidException;
 
 @ControllerAdvice
-public class AddressCepController {
+public class AddressAdviceController {
 
 	@ExceptionHandler(value = ZipCodeInvalidException.class)
 	public ResponseEntity<Error> handle(ZipCodeInvalidException e){

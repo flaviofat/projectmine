@@ -7,6 +7,7 @@ import br.com.nt.address.dao.AddressDao;
 import br.com.nt.address.model.Address;
 import br.com.nt.address.service.AddressService;
 import br.com.nt.address.util.AddressUtil;
+import br.com.nt.exception.AddressInvalidException;
 import br.com.nt.exception.ZipCodeInvalidException;
 
 @Service
@@ -45,7 +46,13 @@ public class AddressServiceImpl implements AddressService {
 
 	@Override
 	public Address findAddressById(Long id) {
-		return findAddressById(id);
+		Address address = addressDao.findAddressById(id);
+
+		if (address == null){
+			throw new AddressInvalidException("Endereco nao encontrado");
+		}
+
+		return address;
 	}
 
 	@Override

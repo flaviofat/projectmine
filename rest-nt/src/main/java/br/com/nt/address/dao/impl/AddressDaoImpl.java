@@ -11,13 +11,14 @@ import br.com.nt.address.model.Address;
 public class AddressDaoImpl implements AddressDao {
 
 	private static List<Address> addreses;
-	private static Long id;
+	private static Long id = 0l;
 	
 	static {
 		addreses = new ArrayList<Address>();
 
 		Address address = new Address();
-		address.setNumber(1l);
+		address.setId(0l);
+		address.setNumber(99l);
 		address.setStreet("Rua das Flores");
 		address.setNeighborhood("Ayrosa");
 		address.setCity("Osasco");
@@ -58,12 +59,13 @@ public class AddressDaoImpl implements AddressDao {
 	public void updateAddress(Address address) {
 		addreses.remove(address);
 		addreses.add(address);
-
 	}
 
 	@Override
 	public void deleteAddress(Long id) {
-		//addreses.remove(address);
+		Address address = new Address();
+		address.setId(id);
+		addreses.remove(address);
 	}
 
 }
