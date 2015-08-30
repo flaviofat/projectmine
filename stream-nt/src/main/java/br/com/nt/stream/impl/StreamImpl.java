@@ -1,6 +1,7 @@
 package br.com.nt.stream.impl;
 
 import br.com.nt.stream.Stream;
+import br.com.nt.stream.exception.NotFoundRepeatedException;
 
 public class StreamImpl implements Stream {
 
@@ -19,8 +20,8 @@ public class StreamImpl implements Stream {
 		return indexChar < input.length();
 	}
 
-	public char findFirstRepeatedChar() {
-		
+	public char findFirstRepeatedChar() throws NotFoundRepeatedException {
+
 		int index = 0;
 		char current;
 		char nextChar;
@@ -30,19 +31,25 @@ public class StreamImpl implements Stream {
 		while (hasNext()) {
 			current = input.charAt(index);
 			nextChar = getNext();
-			
-			if (foundRepeated != 0 && Character.toUpperCase(foundRepeated) != Character.toUpperCase(nextChar)){
+
+			if (foundRepeated != 0
+					&& Character.toUpperCase(foundRepeated) != Character
+							.toUpperCase(nextChar)) {
 				found = nextChar;
 				break;
 			}
-			
-			if (Character.toUpperCase(current) == Character.toUpperCase(nextChar)){
+
+			if (Character.toUpperCase(current) == Character
+					.toUpperCase(nextChar)) {
 				foundRepeated = current;
 			}
 
 			index++;
 		}
 		
+		if (found == 0)
+			throw new NotFoundRepeatedException();
+
 		return found;
 	}
-}	
+}
