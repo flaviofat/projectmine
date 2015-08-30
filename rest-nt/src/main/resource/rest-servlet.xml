@@ -13,7 +13,6 @@
 	<context:component-scan base-package="br.com.nt.*" />
 	<mvc:annotation-driven />
 	
-	<!--  <bean id="b" class="com.brq.selenium.service.BrqServices"></bean>-->
 	<bean id="addressService" class="br.com.nt.address.service.impl.AddressServiceImpl"></bean>
 	<bean id="addressDao" class="br.com.nt.address.dao.impl.AddressDaoImpl"></bean>
 	<bean id="addressUtil" class="br.com.nt.address.util.AddressUtil"></bean>
