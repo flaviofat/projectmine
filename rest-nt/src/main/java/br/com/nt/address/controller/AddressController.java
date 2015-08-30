@@ -19,9 +19,15 @@ public class AddressController {
 	@Autowired
 	private AddressService addressService;
 
-	@RequestMapping(value = "/find/address", method = RequestMethod.POST, consumes="application/json")
+	@RequestMapping(value = "/find/address", method = RequestMethod.POST, consumes="application/json", produces="application/json")
 	@ResponseBody
 	public Address findAddressByZipCode(@RequestBody Address zipCode) {
 		return addressService.findAddressByZipCode(zipCode.getZipCode());
+	}
+
+	@RequestMapping(value = "/insert/address", method = RequestMethod.POST, consumes="application/json", produces="application/json")
+	@ResponseBody
+	public void insertAddress(@RequestBody Address address) {
+		 addressService.insertAddress(address);
 	}
 }

@@ -1,29 +1,84 @@
 <html lang="en">
 <head>
-  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 </head>
 <body>
- 
-<script>
-function teste() {
-	var valor = $('#cep').val();
-	$.ajax({
-	  type: 'POST',
-	  contentType: "application/json; charset=utf-8",
-	  url: "http://localhost:8080/rest-nt/services/find/address/",
-	  data: JSON.stringify({zipCode:valor}),
-	  success: function(callback){
-		  $("#textArea1").val("");
-		  $("#textArea1").val(callback.messageError).val(callback.messageError);
-	}
-	});
-}
-</script>
-INSIRA UM CEP:
-<input type="text" id="cep">
-<button type="button" onclick="teste()">BUSCAR CEP</button>
-<br/>
-<textarea rows="10" cols="20" id="textArea1"></textarea>
- 
+
+	<script>
+		function control(url) {
+			var rua = $('#rua').val();
+			var numero = $('#numero').val();
+			var cep = null;
+			if ($('#cep2').val() != "") {
+				cep = $('#cep2').val();
+			} else if ($('#cep').val() != "") {
+				cep = $('#cep').val();
+			}
+			var cidade = $('#cidade').val();
+			var estado = $('#estado').val();
+			var bairro = $('#bairro').val();
+			var complemento = $('#complemento').val();
+					
+			$.ajax({
+				type : 'POST',
+				contentType : "application/json; charset=utf-8",
+				url : "http://localhost:8080/rest-nt/services/"+url,
+				data : JSON.stringify({
+
+					number:numero,
+					zipCode:cep,
+					street:rua,
+					neighborhood:bairro,
+					city:cidade,
+					state:estado,
+					complement:complemento
+
+				}),
+				success : function(callback) {
+					$("#textArea1").val("");
+					$("#textArea1").val(callback.messageError).val(
+							callback.messageError);
+				},
+				error : function(callback) {
+					$("#textArea1").val(callback.responseJSON.message);
+				}
+			});
+		}
+	</script>
+	<label>INSIRA UM CEP:</label>
+	<input type="text" id="cep">
+	<button type="button" onclick="control('find/address/')">BUSCAR CEP</button>
+	<br />
+	<br />
+	<br />
+	<input type="text" id="rua" placeholder="RUA">
+	<br />
+	<input type="text" id="numero" placeholder="NUMERO">
+	<br />
+	<input type="text" id="cep2" placeholder="CEP">
+	<br />
+	<input type="text" id="cidade" placeholder="CIDADE">
+	<br />
+	<input type="text" id="estado" placeholder="ESTADO">
+	<br />
+	<input type="text" id="bairro" placeholder="BAIRRO">
+	<br />
+	<input type="text" id="complemento" placeholder="COMPLEMENTO">
+	<br />
+	<br />
+	<button type="button" onclick="control('insert/address/')">INCLUIR ENDERECO</button>
+	<button type="button" onclick="control('find/address/')">CONSULTAR ENDERECO</button>
+	<button type="button" onclick="control('update/address/')">ATUALIZAR ENDERECO</button>
+	<button type="button" onclick="control('delete/address/')">DELETAR ENDERECO</button>
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<label>RESULTADO</label>
+	<br />
+	<br />
+	<textarea rows="10" cols="20" id="textArea1"></textarea>
 </body>
 </html>

@@ -1,31 +1,69 @@
 package br.com.nt.address.dao.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
 
 import br.com.nt.address.dao.AddressDao;
 import br.com.nt.address.model.Address;
 
 public class AddressDaoImpl implements AddressDao {
 
-	public Address findAddressByZipCode(String zipCode) {
-		
-		//Vamos fingir que existe uma proc aqui, e que o banco restorne algo...
+	private static List<Address> addreses;
+	private static Long id;
+	
+	static {
+		addreses = new ArrayList<Address>();
 
-		Address address = null;
+		Address address = new Address();
+		address.setNumber(1l);
+		address.setStreet("Rua das Flores");
+		address.setNeighborhood("Ayrosa");
+		address.setCity("Osasco");
+		address.setState("SP");
+		address.setZipCode("06293100");
 
-		//Para tal fingimento, devo fazer um if forcando o zipCode
-		//If nao se faz em DAO...
-		if(zipCode.equals("06200000")) {
-			address = new Address();
-			address.setStreet("Rua das Flores");
-			address.setNeighborhood("Ayrosa");
-			address.setCity("Osasco");
-			address.setState("SP");
-			address.setZipCode("06293100");
-		}
+		addreses.add(address);
 
-		return address;
 	}
-	
-	
+
+	@Override
+	public Address findAddressByZipCode(String zipCode) {
+
+		Optional<Address> option = addreses.stream()
+				.filter(address -> zipCode.equals(address.getZipCode()))
+				.findFirst();
+
+		return option.orElse(null);
+	}
+
+	@Override
+	public void insertAddress(Address address) {
+		id = id + 1;
+		address.setId(id);
+		addreses.add(address);
+	}
+
+	@Override
+	public Address findAddressById(Long id) {
+
+		Optional<Address> option = addreses.stream()
+				.filter(address -> id.equals(address.getId())).findFirst();
+
+		return option.orElse(null);
+	}
+
+	@Override
+	public void updateAddress(Address address) {
+		addreses.remove(address);
+		addreses.add(address);
+
+	}
+
+	@Override
+	public void deleteAddress(Long id) {
+		//addreses.remove(address);
+	}
+
 }

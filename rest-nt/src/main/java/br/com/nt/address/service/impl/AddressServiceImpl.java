@@ -1,12 +1,15 @@
 package br.com.nt.address.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import br.com.nt.address.dao.AddressDao;
 import br.com.nt.address.model.Address;
 import br.com.nt.address.service.AddressService;
 import br.com.nt.address.util.AddressUtil;
+import br.com.nt.exception.ZipCodeInvalidException;
 
+@Service
 public class AddressServiceImpl implements AddressService {
 
 	@Autowired
@@ -15,26 +18,45 @@ public class AddressServiceImpl implements AddressService {
 	@Autowired
 	private AddressUtil addressUtil;
 
-	public Address findAddressByZipCode(String zipCode) {
+	@Override
+	public Address findAddressByZipCode(String zipCode)	throws ZipCodeInvalidException {
 
-		Address address = new Address();
+		Address address;
 
-		try {
-			addressUtil.validateZipCode(zipCode);
-		} catch (Exception e) {
-			address.setMessageError(e.getMessage());
-			return address;
-		}
-
-		
 		do {
 
+			addressUtil.validateZipCode(zipCode);
 			address = addressDao.findAddressByZipCode(zipCode);
+
 			if (address == null)
 				zipCode = addressUtil.putZeroToRight(zipCode);
 
-		} while (address == null); 
+		} while (address == null);
 
 		return address;
+	}
+
+	@Override
+	public void insertAddress(Address address) {
+		addressUtil.validateAddress(address);
+		addressUtil.validateZipCode(address.getZipCode());
+		addressDao.insertAddress(address);
+	}
+
+	@Override
+	public Address findAddressById(Long id) {
+		return findAddressById(id);
+	}
+
+	@Override
+	public void updateAddress(Address address) {
+		addressUtil.validateAddress(address);
+		addressUtil.validateZipCode(address.getZipCode());
+		addressDao.updateAddress(address);
+	}
+
+	@Override
+	public void deleteAddress(Long id) {
+		addressDao.deleteAddress(id);
 	}
 }
