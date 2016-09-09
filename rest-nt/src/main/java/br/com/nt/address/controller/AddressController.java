@@ -17,19 +17,19 @@ public class AddressController {
 	@Autowired
 	private AddressService addressService;
 
-	@RequestMapping(value = "/find/zipcode", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = "/find/zipcode", method = RequestMethod.GET, consumes = "application/json", produces = "application/json")
 	@ResponseBody
 	public Address findAddressByZipCode(@RequestBody Address zipCode) {
 		return addressService.findAddressByZipCode(zipCode.getZipCode());
 	}
 
-	@RequestMapping(value = "/insert/address", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = "/insert/address", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
 	@ResponseBody
 	public void insertAddress(@RequestBody Address address) {
 		addressService.insertAddress(address);
 	}
 
-	@RequestMapping(value = "/find/address", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = "/find/address", method = RequestMethod.GET, consumes = "application/json", produces = "application/json")
 	@ResponseBody
 	public Address findAddressById(@RequestBody Address address) {
 		return addressService.findAddressById(address.getId());
@@ -41,7 +41,7 @@ public class AddressController {
 		addressService.updateAddress(address);
 	}
 
-	@RequestMapping(value = "/delete/address", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = "/delete/address", method = RequestMethod.DELETE, consumes = "application/json", produces = "application/json")
 	@ResponseBody
 	public void deleteAddressById(@RequestBody Address address) {
 		addressService.deleteAddress(address.getId());
